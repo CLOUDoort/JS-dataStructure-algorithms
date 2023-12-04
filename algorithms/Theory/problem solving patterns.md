@@ -54,3 +54,37 @@ function validAnagram(first, second) {
   return true;
 }
 ```
+
+## Multiple Pointers
+
+- 포인터 변수 2개를 이용하여 성능을 개선한다.
+
+### practice
+
+```js
+function sumZero(arr) {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left < right) {
+    let sum = arr[left] + arr[right];
+    if (sum === 0) return [arr[left], arr[right]];
+    else if (sum > 0) right--;
+    else left++;
+  }
+}
+```
+
+```js
+function countUniqueValues(arr) {
+  if (arr.length === 0) return 0;
+
+  let i = 0;
+  for (let j = 1; j < arr.length; j++) {
+    if (arr[i] !== arr[j]) {
+      i++;
+      arr[i] = arr[j];
+    }
+  }
+  return i + 1;
+}
+```
