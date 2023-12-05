@@ -113,3 +113,31 @@ const solution = (arr, n) => {
 };
 // [1,2,3,4,5], 2
 ```
+
+## Divide and Conquer
+
+- 배열, 문자열, 트리, 연결 리스트와 같이 큰 규모의 데이터를 처리하는 방식.
+- 데이터를 작은 조각으로 세분하여 처리.
+
+### Practice
+
+- Binary Search
+- 정렬된 배열이어야만 한다.
+- 시간복잡도는 O(logN)
+
+```js
+const BinarySearch = (arr, target) => {
+  let st = 0;
+  let en = arr.length;
+
+  while (st < en) {
+    let mid = Math.floor((st + en) / 2);
+    let element = arr[mid];
+    if (target === element) return mid;
+    else if (target > element) st = mid + 1;
+    else en = mid - 1;
+  }
+
+  return -1;
+};
+```
