@@ -88,3 +88,28 @@ function countUniqueValues(arr) {
   return i + 1;
 }
 ```
+
+## Sliding window
+
+- 배열이나 문자열과 같은 일련의 데이터에서 **특정 방식으로 연속적인 해당 데이터의 하위 집합을 찾는 경우**에 유용하다.
+
+### Practice
+
+- 정수로 이루어진 배열과 1 이상의 정수 n이 주어진다. 배열에서 n개의 연속적인 수의 합의 최댓값을 구하는 함수.
+
+```js
+const solution = (arr, n) => {
+  if (arr.length < n) return null;
+  let maxSum = 0;
+  let tempSum = 0;
+  for (let i = 0; i < n; i++) maxSum += arr[i];
+  tempSum = maxSum;
+
+  for (let i = n; i < arr.length; i++) {
+    tempSum = tempSum - arr[i - n] + arr[i];
+    tempSum = Math.max(tempSum, maxSum);
+  }
+  return maxSum;
+};
+// [1,2,3,4,5], 2
+```
