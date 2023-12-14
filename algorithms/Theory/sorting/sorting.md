@@ -30,8 +30,8 @@ arr.sort(numberCompare);
 
 ## 비교(bubble, selection, insertion)
 
-| :Algorithm:      | :Time Complexity(Best): | :Time Complexity(Average): | :Time Complexity(Worst): | :Space Complexity: |
-| ---------------- | ----------------------- | -------------------------- | ------------------------ | ------------------ |
-| :Bubble Sort:    | :O(N):                  | :O(N^2):                   | :O(N^2):                 | :O(1):             |
-| :Insertion Sort: | :O(N):                  | :O(N^2):                   | :O(N^2):                 | :O(1):             |
-| :Selection Sort: | :O(N^2):                | :O(N^2):                   | :O(N^2):                 | :O(1):             |
+|   Algorithm    | Time Complexity(Best) | Time Complexity(Average) | Time Complexity(Worst) | Space Complexity |
+| :------------: | :-------------------: | :----------------------: | :--------------------: | :--------------: |
+|  Bubble Sort   |         O(N)          |          O(N^2)          |         O(N^2)         |       O(1)       |
+| Insertion Sort |         O(N)          |          O(N^2)          |         O(N^2)         |       O(1)       |
+| Selection Sort |        O(N^2)         |          O(N^2)          |         O(N^2)         |       O(1)       |
