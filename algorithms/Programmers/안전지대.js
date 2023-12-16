@@ -1,24 +1,24 @@
 function solution(board) {
-  const dxdy = [];
+  const n = board.length;
+  const d = [];
   for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) dxdy.push([i, j]);
+    for (let j = -1; j <= 1; j++) d.push([i, j]);
   }
 
-  const bomb = [];
+  const danger = new Set();
+
   board.forEach((value, idx) => {
     value.forEach((v, i) => {
-      if (v === 1) bomb.push({ x: idx, y: i });
-    });
-  });
-
-  const line = board.length - 1;
-  bomb.forEach(({ x, y }) => {
-    dxdy.forEach(([a, b]) => {
-      if (!(x + a < 0 || x + a > line || y + b < 0 || y + b > line)) {
-        board[x + a][y + b] = 1;
+      if (v === 1) {
+        d.forEach(([a, b]) => {
+          const [row, col] = [idx + a, i + b];
+          if (row >= 0 && row < n && col >= 0 && col < n) {
+            danger.add(`${row} ${col}`);
+          }
+        });
       }
     });
   });
 
-  return board.flat().filter((v) => v === 0).length;
+  return n ** 2 - danger.size;
 }
