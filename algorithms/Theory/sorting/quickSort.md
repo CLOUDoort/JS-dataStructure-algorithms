@@ -59,4 +59,4 @@ quickSort([4, 8, 2, 1, 5, 7, 6, 3]);
 
 | Algorithm  | Time Complexity(Best) | Time Complexity(Average) | Time Complexity(Worst) | Space Complexity |
 | :--------: | :-------------------: | :----------------------: | :--------------------: | :--------------: |
-| Merge Sort |       O(NlogN)        |         O(NlogN)         |         O(N^2)         |       O(N)       |
+| Quick Sort |       O(NlogN)        |         O(NlogN)         |         O(N^2)         |       O(N)       |
