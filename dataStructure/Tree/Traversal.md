@@ -1,5 +1,8 @@
 # Tree Traversal
 
+- BFS나 DFS의 시간복잡도는 같다.
+- 너비가 넓은 트리일 경우 BFS를 사용하면 공간복잡도가 커지고, 깊이가 깊은 트리일 경우 DFS를 사용하면 공간복잡도가 커진다.
+
 ## BFS(Breath First Search)
 
 - 수평으로 탐색한다. 즉 형제 노드를 우선으로 탐색한다.
@@ -32,8 +35,53 @@ BFS() {
 
 ## DFS(Depth First Search)
 
+- BST에서 데이터를 순서대로 순회하려면 InOrder
+- 트리를 해체해서 DB에 저장했다가 다시 복구할 때는 PreOrder(root 노드 바로 확인 가능)
+
 ### pre-order traversal
 
-### in-order traversal
+```js
+DFSPreOrder() {
+  const visited = [];
+  const traverse = (node) => {
+    visited.push(node);
+    if(node.left) traverse(node.left);
+    if(node.right) traverse(node.right);
+  }
+  traverse(this.root);
+  return visited;
+}
+```
 
 ### post-order traversal
+
+- root 노드가 가장 마지막
+- 즉 모든 자식 노드를 방문한 뒤에 부모 노드를 방문
+
+```js
+DFSPostOrder() {
+  const visited = [];
+  const traverse = (node) => {
+    if(node.left) traverse(node.left);
+    if(node.right) traverse(node.right);
+    visited.push(node);
+  }
+  traverse(this.root);
+  return visited;
+}
+```
+
+### int-order traversal
+
+```js
+DFSInOrder() {
+  const visited = [];
+  const traverse = (node) => {
+    if(node.left) traverse(node.left);
+    visited.push(node);
+    if(node.right) traverse(node.right);
+  }
+  traverse(this.root);
+  return visited;
+}
+```
