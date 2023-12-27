@@ -17,6 +17,12 @@
 - 배열로 표현할 것이기 때문에 이전처럼 left, right 포인터가 있는 node 클래스도 필요없다.
 - 값을 배열에 삽입하고 배열 인덱스에 상응하는 개별 숫자들이 힙의 구조를 보여주게 된다.
 
+## Big-O of Binary Heap
+
+- Insertion - O(logN)
+- Removal - O(logN)
+- Search - O(N)
+
 ## MaxBinaryHeap 구현
 
 - insert
@@ -65,7 +71,7 @@ class MaxBinaryHeap {
 
   bubbleDown() {
     let idx = 0;
-    let element = this.values[idx];
+    let element = this.values[0];
     while (idx < this.values.length) {
       element = this.values[idx];
       let leftChildIdx = idx * 2 + 1;
@@ -83,6 +89,91 @@ class MaxBinaryHeap {
         this.values[rightChildIdx] = element;
         idx = rightChildIdx;
       }
+    }
+  }
+}
+```
+
+# Priority Queue (우선순위 큐)
+
+- 우선순위 큐는 각 요소가 그에 해당하는 우선순위를 가지는 데이터 구조이다.
+- 그리고 더 높은 우선순위를 가진 요소가 더 낮은 우선순위를 가진 요소보다 먼저 처리된다.
+- 우선순위 큐는 힙과는 별개이고 추상적인 개념에 불과하다. 즉 우선순위 큐는 배열이나 리스트를 가지고도 만들 수 있다.
+- 하지만 우선순위 큐를 만드는 최고의 방법이 힙일 뿐이다.
+- 힙과 다른 점은 요소의 값을 비교하는 것이 아니라 우선순위를 비교해야 한다는 것이다.
+
+## 구현
+
+- MinBinaryHeap으로 구현
+
+```js
+class Node {
+  constructor(val, priority) {
+    this.val = val;
+    this.priority = priority;
+  }
+}
+
+class PriorityQueue {
+  constructor() {
+    this.values = [];
+  }
+
+  enqueue(val, priority) {
+    const newNode = new Node(val, priority);
+    this.values.push(newNode);
+    this.bubbleUp();
+  }
+
+  bubbleUp() {
+    let idx = this.values.length - 1;
+    const element = this.values[idx];
+    while (idx > 0) {
+      let parentIdx = Math.floor((idx - 1) / 2);
+      let parent = this.values[parentIdx];
+      if (parent.priority <= element.priority) break;
+      this.values[parentIdx] = element;
+      this.values[idx] = parent;
+      idx = parentIdx;
+    }
+  }
+
+  dequeue() {
+    const min = this.values[0];
+    const end = this.values.pop();
+    if (this.values.length > 0) {
+      this.values[0] = end;
+      this.bubbleDown();
+    }
+
+    return min;
+  }
+
+  bubbleDown() {
+    let idx = 0;
+    const length = this.values.length;
+    const element = this.values[0];
+    while (true) {
+      let leftChildIdx = idx * 2 + 1;
+      let rightChildIdx = idx * 2 + 2;
+      let leftChild, rightChild;
+      let swap = null;
+      if (leftChildIdx < length) {
+        leftChild = this.values[leftChildIdx];
+        if (leftChild.priority < element.priority) {
+          swap = leftChildIdx;
+        }
+      }
+      if (rightChildIdx < length) {
+        rightChild = this.values[rightChildIdx];
+        if ((swap === null && rightChild.priority < element.priority) || (swap !== null && leftChild.priority > rightChild.priority)) {
+          swap = rightChildIdx;
+        }
+      }
+      if (swap === null) break;
+      this.values[idx] = this.values[swap];
+      this.values[swap] = element;
+      idx = swap;
     }
   }
 }
