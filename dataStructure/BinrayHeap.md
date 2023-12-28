@@ -63,32 +63,42 @@ class MaxBinaryHeap {
   remove() {
     if (!this.values.length) return undefined;
     const topNode = this.values[0];
-    this.values[0] = this.values.pop();
-    this.bubbleDown();
+    const end = this.values.pop();
+    if (this.values.length > 0) {
+      this.values[0] = end;
+      this.bubbleDown();
+    }
 
     return topNode;
   }
 
   bubbleDown() {
     let idx = 0;
-    let element = this.values[0];
-    while (idx < this.values.length) {
-      element = this.values[idx];
-      let leftChildIdx = idx * 2 + 1;
-      let leftChild = this.values[leftChildIdx];
-      let rightChildIdx = idx * 2 + 2;
-      let rightChild = this.values[rightChildIdx];
+    const length = this.values.length;
+    const element = this.values[0];
+    while (true) {
+      let leftChildIdx = 2 * idx + 1;
+      let rightChildIdx = 2 * idx + 2;
+      let leftChild, rightChild;
+      let swap = null;
 
-      if (element >= leftChild && element >= rightChild) break;
-      if (leftChild > rightChild) {
-        this.values[idx] = leftChild;
-        this.values[leftChildIdx] = element;
-        idx = leftChildIdx;
-      } else {
-        this.values[idx] = rightChild;
-        this.values[rightChildIdx] = element;
-        idx = rightChildIdx;
+      if (leftChildIdx < length) {
+        leftChild = this.values[leftChildIdx];
+        if (leftChild > element) {
+          swap = leftChildIdx;
+        }
       }
+
+      if (rightChildIdx < length) {
+        rightChild = this.values[rightChildIdx];
+        if ((swap === null && rightChild > element) || (swap !== null && rightChild > leftChild)) {
+          swap = rightChildIdx;
+        }
+      }
+      if (swap === null) break;
+      this.values[idx] = this.values[swap];
+      this.values[swap] = element;
+      idx = swap;
     }
   }
 }
@@ -139,6 +149,7 @@ class PriorityQueue {
   }
 
   dequeue() {
+    if (!this.values.length) return false;
     const min = this.values[0];
     const end = this.values.pop();
     if (this.values.length > 0) {
