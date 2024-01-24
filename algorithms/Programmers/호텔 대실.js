@@ -4,32 +4,16 @@ const getTime = (time) => {
 };
 
 const solution = (book_time) => {
-  let room = 0;
-
   const sortedArr = book_time.slice().sort();
 
-  const list = [];
+  const room = [];
   sortedArr.forEach((time) => {
-    if (list.length) {
-      let flag = false;
-      for (let i = 0; i < list.length; i++) {
-        if (getTime(time[0]) >= getTime(list[i]) + 10) {
-          list[i] = time[1];
-          flag = true;
-          break;
-        }
-      }
-      if (!flag) {
-        list.push(time[1]);
-        room++;
-      }
-    } else {
-      list.push(time[1]);
-      room++;
-    }
+    const idx = room.findIndex((e) => getTime(time[0]) >= getTime(e) + 10);
+    if (idx === -1) room.push(time[1]);
+    else room[idx] = time[1];
   });
 
-  return room;
+  return room.length;
 };
 
 console.log(
