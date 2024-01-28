@@ -1,29 +1,26 @@
-const convert = (time) => {
-  const arr = time.split(':').map(Number);
-  return arr[0] * 60 + arr[1];
+const convert = (plan) => {
+  const [subject, time, spend] = plan;
+  const [hour, min] = time.split(':').map(Number);
+  return [subject, hour * 60 + min, Number(spend)];
 };
 
 const solution = (plans) => {
-  const sorted = plans
-    .slice()
-    .map((v) => [v[0], convert(v[1]), +v[2]])
-    .sort((a, b) => a[1] - b[1]);
-
-  const result = [];
-  const first = sorted.shift();
+  const queue = plans.map(convert).sort((a, b) => a[1] - b[1]);
+  const first = queue.shift();
   let curTime = first[1];
 
-  const stack = [first];
+  const result = [];
+  const doing = [first];
 
-  while (sorted.length) {
-    const target = sorted.shift();
-    const [_name, time, _spend] = target;
+  while (queue.length) {
+    const next = queue.shift();
+    const [name, time, spend] = next;
     let timeDiff = time - curTime;
     curTime = time;
 
-    while (stack.length && timeDiff > 0) {
-      const latestPlan = stack.pop();
-      const [lName, _lTime, lSpend] = latestPlan;
+    while (doing.length && timeDiff > 0) {
+      const latestPlan = doing.pop();
+      const [lName, lTime, lSpend] = latestPlan;
 
       if (lSpend <= timeDiff) {
         result.push(lName);
@@ -31,15 +28,14 @@ const solution = (plans) => {
       } else {
         latestPlan[2] = lSpend - timeDiff;
         timeDiff = 0;
-        stack.push(latestPlan);
+        doing.push(latestPlan);
       }
     }
-
-    stack.push(target);
+    doing.push(next);
   }
 
-  while (stack.length) {
-    result.push(stack.pop()[0]);
+  while (doing.length) {
+    result.push(doing.pop()[0]);
   }
 
   return result;
