@@ -1,21 +1,17 @@
 const solution = (numbers, target) => {
   let ans = 0;
-  const visited = Array.from({ length: numbers.length }, () => false);
-  const DFS = (cur) => {
-    if (cur === target) {
-      ans++;
+  const DFS = (count, sum) => {
+    if (count === numbers.length) {
+      if (sum === target) ans++;
       return;
     }
 
-    for (let i = 0; i < numbers.length; i++) {
-      if (visited[i]) continue;
-      visited[i] = true;
-      DFS(cur + numbers[i]);
-      DFS(cur - numbers[i]);
-      visited[i] = false;
-    }
+    DFS(count + 1, sum + numbers[count]);
+    DFS(count + 1, sum - numbers[count]);
   };
 
-  DFS(0);
+  DFS(0, 0);
   return ans;
 };
+
+console.log(solution([1, 1, 1, 1, 1], 3));
