@@ -1,58 +1,86 @@
-const solution = (dice) => {
-  const len = dice.length;
-  const pickSize = len / 2;
-  const A = [];
-  let max = 0;
-  let ans = [];
-
-  const pickDice = (count = [], start = 0) => {
+const pickDice = (pickSize, length) => {
+  const arr = [];
+  const DFS = (count = [], start = 0) => {
     if (count.length === pickSize) {
-      A.push([...count]);
+      arr.push([...count]);
       return;
     }
-    if (start === len) return;
-    for (let i = start; i < len; i++) {
+    if (start === length) return;
+    for (let i = start; i < length; i++) {
       count.push(i);
-      pickDice(count, i + 1);
+      DFS(count, i + 1);
       count.pop();
     }
   };
-  pickDice();
-  const B = A.map((c) => {
-    const b = Array.from({ len }, (_, i) => i);
+  DFS();
+  return arr;
+};
+
+const restDice = (arr, length) => {
+  return arr.map((c) => {
+    const b = Array.from({ length }, (_, i) => i);
     c.forEach((n) => b.splice(b.indexOf(n), 1));
     return b;
   });
+};
 
-  const simulate = (a, b) => {
-    const caseArr = [];
-    let wins;
-    const DFS = (count = []) => {
-      if (count.length === a.length) {
-        caseArr.push([...count]);
-        return;
-      }
-      for (let i = 0; i < 6; i++) {
-        count.push(i);
-        DFS(count);
-        count.pop();
-      }
-    };
-    DFS();
-    console.log(caseArr);
-    for (let i = 0; i < caseArr.length; i++) {
-      let sumA = 0;
-      let sumB = 0;
-      caseArr[i].forEach((c, idx) => {
-        sumA += dice[A[idx]][c];
-        sumB += dice[B[idx]][c];
-      });
-      if (sumA > sumB) wins++;
+const simulateCase = (length) => {
+  const caseArr = [];
+  const DFS = (count = []) => {
+    if (count.length === length) {
+      caseArr.push([...count]);
+      return;
+    }
+    for (let i = 0; i < 6; i++) {
+      count.push(i);
+      DFS(count);
+      count.pop();
     }
   };
+  DFS();
+  return caseArr;
+};
 
+const solution = (dice) => {
+  const length = dice.length;
+  const pickSize = length / 2;
+  let max = 0;
+  let ans = [];
+
+  const A = pickDice(pickSize, length);
+  const B = restDice(A, length);
+  const caseArr = simulateCase(length);
+
+  const aSum = [];
+  const bSum = [];
   for (let i = 0; i < A.length; i++) {
-    const wins = simulate(A[i], B[i]);
+    const temp = [];
+    for (let j = 0; j < caseArr.length; j++) {
+      let sum = 0;
+      A[i].forEach((v, idx) => {
+        sum += dice[v][caseArr[j][idx]];
+      });
+      temp.push(sum);
+    }
+    aSum.push([...temp]);
+  }
+  for (let i = 0; i < B.length; i++) {
+    const temp = [];
+    for (let j = 0; j < caseArr.length; j++) {
+      let sum = 0;
+      B[i].forEach((v, idx) => {
+        sum += dice[v][caseArr[j][idx + pickSize]];
+      });
+      temp.push(sum);
+    }
+    bSum.push([...temp]);
+  }
+
+  for (let i = 0; i < aSum.length; i++) {
+    let wins = 0;
+    aSum[i].forEach((v, idx) => {
+      if (v > bSum[i][idx]) wins++;
+    });
     if (wins > max) {
       max = wins;
       ans = [...A[i]];
