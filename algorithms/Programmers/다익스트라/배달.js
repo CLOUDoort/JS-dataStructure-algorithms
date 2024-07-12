@@ -1,30 +1,28 @@
 const solution = (N, road, K) => {
-  // 1번 마을에서 시작해서 N번 마을까지의 최소 거리 기록
-  const record = Array.from({ length: N + 1 }).fill(Number.MAX_SAFE_INTEGER);
-  const lines = Array.from({ length: N + 1 }, () => []);
+  const minCostInfos = Array.from({ length: N + 1 }).fill(Number.MAX_SAFE_INTEGER);
+  const line = Array.from({ length: N + 1 }, () => []);
 
   road.forEach((v) => {
     const [from, to, cost] = v;
-
-    lines[from].push({ to, cost });
-    lines[to].push({ to: from, cost });
+    line[from].push({ to, cost });
+    line[to].push({ to: from, cost });
   });
 
-  let queue = [{ to: 1, cost: 0 }];
-  record[1] = 0;
+  const queue = [{ to: 1, cost: 0 }];
+  minCostInfos[1] = 0;
 
   while (queue.length) {
-    let { to } = queue.pop();
+    const { to, cost } = queue.pop();
 
-    lines[to].forEach((next) => {
-      if (record[next.to] > record[to] + next.cost) {
-        record[next.to] = record[to] + next.cost;
+    line[to].forEach((next) => {
+      if (minCostInfos[next.to] > minCostInfos[to] + cost) {
+        minCostInfos[next.to] = minCostInfos[to] + cost;
         queue.push(next);
       }
     });
   }
 
-  return record.filter((r) => r <= K).length;
+  return minCostInfos.filter((v) => v <= K).length;
 };
 
 console.log(
