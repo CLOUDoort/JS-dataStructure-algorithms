@@ -20,7 +20,7 @@ const solution = (maps) => {
           const x = curX + dx[k];
           const y = curY + dy[k];
 
-          if (x < 0 || x >= length || y < 0 || y >= length) continue;
+          if (x < 0 || x >= length || y < 0 || y >= maps[i].length) continue;
           if (visited[x][y] === true || maps[x][y] === 'X') continue;
 
           sum += Number(maps[x][y]);
@@ -36,5 +36,3 @@ const solution = (maps) => {
   ans.sort((a, b) => a - b);
   return ans;
 };
-
-console.log(solution(['X591X', 'X1X5X', 'X231X', '1XXX1']));
